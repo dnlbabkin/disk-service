@@ -1,18 +1,13 @@
 package com.reliab.diskservice.enums;
 
-public enum ServicesEnum {
+public enum TypeOfService {
     YANDEX("yandex"),
-    GOOGLE("google"),
-    UNKNOWN;
+    GOOGLE("google");
 
     private String service;
 
-    ServicesEnum(String service) {
+    TypeOfService(String service) {
         this.service = service;
-    }
-
-    ServicesEnum() {
-
     }
 
     public String getService() {

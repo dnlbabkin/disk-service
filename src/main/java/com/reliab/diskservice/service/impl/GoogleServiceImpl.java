@@ -1,4 +1,4 @@
-package com.reliab.diskservice.service.implementions;
+package com.reliab.diskservice.service.impl;
 
 import com.reliab.diskservice.model.File;
 import com.reliab.diskservice.service.DiskService;
@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("yandex")
-public class YandexServiceImpl implements DiskService {
+@Service("google")
+public class GoogleServiceImpl implements DiskService {
     @Override
     public List<File> getFiles() {
         List<File> files = new ArrayList<>();
         File file = new File();
 
-        file.setFileName("yandex");
+        file.setFileName("google");
         files.add(file);
 
         return files;

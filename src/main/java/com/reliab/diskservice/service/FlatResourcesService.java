@@ -1,13 +1,11 @@
 package com.reliab.diskservice.service;
 
 import com.reliab.diskservice.enums.TypeOfService;
-import com.reliab.diskservice.model.File;
 import com.yandex.disk.rest.exceptions.ServerIOException;
-import com.yandex.disk.rest.json.DiskInfo;
+import com.yandex.disk.rest.json.ResourceList;
 
 import java.io.IOException;
-import java.util.List;
 
-public interface DiskService {
-    List<File> getFiles();
+public interface FlatResourcesService {
+    ResourceList getFlatResource() throws ServerIOException, IOException;
 }
