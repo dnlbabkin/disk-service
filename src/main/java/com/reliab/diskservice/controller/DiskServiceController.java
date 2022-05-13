@@ -1,16 +1,15 @@
 package com.reliab.diskservice.controller;
 
 import com.reliab.diskservice.enums.TypeOfService;
+import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.File;
 import com.reliab.diskservice.service.impl.ChoiceServiceImpl;
 import com.yandex.disk.rest.exceptions.ServerException;
 import com.yandex.disk.rest.exceptions.ServerIOException;
 import com.yandex.disk.rest.json.DiskInfo;
-import com.yandex.disk.rest.json.Link;
 import com.yandex.disk.rest.json.Resource;
 import com.yandex.disk.rest.json.ResourceList;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -52,9 +51,21 @@ public class DiskServiceController {
         return resource;
     }
 
-    @GetMapping("/{typeOfService}/download/{path}")
-    public void downloadFile(@PathVariable("typeOfService") TypeOfService typeOfService,
-                             @PathVariable("path") String path) throws ServerException, IOException {
-        choiceService.downloadFile(typeOfService, path);
+    @PostMapping("/{typeOfService}/download/{file}")
+    public String downloadFile(@PathVariable("typeOfService") TypeOfService typeOfService,
+                               @PathVariable("file") String file,
+                               @RequestBody Path path) throws ServerException, IOException {
+        choiceService.downloadFile(typeOfService, path, file);
+
+        return path.getPath() + file;
+    }
+
+    @PutMapping("/{typeOfService}/upload/{file}")
+    public String uploadFile(@PathVariable("typeOfService") TypeOfService typeOfService,
+                             @PathVariable("file") String file,
+                             @RequestBody Path path) throws ServerException, IOException {
+        choiceService.uploadFile(typeOfService, path, file);
+
+        return path.getPath() + file;
     }
 }

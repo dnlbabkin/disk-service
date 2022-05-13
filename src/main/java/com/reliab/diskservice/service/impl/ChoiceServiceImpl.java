@@ -1,12 +1,12 @@
 package com.reliab.diskservice.service.impl;
 
 import com.reliab.diskservice.enums.TypeOfService;
+import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.File;
 import com.reliab.diskservice.service.*;
 import com.yandex.disk.rest.exceptions.ServerException;
 import com.yandex.disk.rest.exceptions.ServerIOException;
 import com.yandex.disk.rest.json.DiskInfo;
-import com.yandex.disk.rest.json.Link;
 import com.yandex.disk.rest.json.Resource;
 import com.yandex.disk.rest.json.ResourceList;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,7 @@ public class ChoiceServiceImpl implements ChoiceService {
     private final Map<String, FlatResourcesService> patchResourcesMap;
     private final Map<String, ResourcesService> resourcesMap;
     private final Map<String, DownloadFileService> downloadFileServiceMap;
+    private final Map<String, UploadFileService> uploadFileServiceMap;
 
 
 
@@ -57,9 +58,16 @@ public class ChoiceServiceImpl implements ChoiceService {
     }
 
     @Override
-    public void downloadFile(TypeOfService typeOfService, String path) throws ServerException, IOException {
+    public void downloadFile(TypeOfService typeOfService, Path path, String file) throws ServerException, IOException {
         DownloadFileService downloadFileService = downloadFileServiceMap.get(typeOfService.getService());
 
-        downloadFileService.downloadFile(path);
+        downloadFileService.downloadFile(path, file);
+    }
+
+    @Override
+    public void uploadFile(TypeOfService typeOfService, Path path, String file) throws ServerException, IOException {
+        UploadFileService uploadFileService = uploadFileServiceMap.get(typeOfService.getService());
+
+        uploadFileService.uploadFile(path, file);
     }
 }

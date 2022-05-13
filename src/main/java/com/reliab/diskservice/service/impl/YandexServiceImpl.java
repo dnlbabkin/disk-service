@@ -1,5 +1,6 @@
 package com.reliab.diskservice.service.impl;
 
+import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.File;
 import com.reliab.diskservice.service.*;
 import com.yandex.disk.rest.FileDownloadListener;
@@ -7,7 +8,9 @@ import com.yandex.disk.rest.ResourcesArgs;
 import com.yandex.disk.rest.RestClient;
 import com.yandex.disk.rest.exceptions.ServerException;
 import com.yandex.disk.rest.exceptions.ServerIOException;
+import com.yandex.disk.rest.exceptions.WrongMethodException;
 import com.yandex.disk.rest.json.DiskInfo;
+import com.yandex.disk.rest.json.Link;
 import com.yandex.disk.rest.json.Resource;
 import com.yandex.disk.rest.json.ResourceList;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +22,9 @@ import java.util.List;
 
 @Service("yandex")
 @RequiredArgsConstructor
-public class YandexServiceImpl implements DiskInfoService, DiskService, FlatResourcesService, ResourcesService, DownloadFileService {
+public class YandexServiceImpl implements
+        DiskInfoService, DiskService, FlatResourcesService,
+        ResourcesService, DownloadFileService, UploadFileService {
 
     private final RestClient restClient;
 
@@ -58,8 +63,14 @@ public class YandexServiceImpl implements DiskInfoService, DiskService, FlatReso
     }
 
     @Override
-    public void downloadFile(String path) throws ServerException, IOException {
-        restClient.downloadFile(path,
-                new FileDownloadListener(new java.io.File(path), null));
+    public void downloadFile(Path path, String file) throws ServerException, IOException {
+        restClient.downloadFile(file,
+                new FileDownloadListener(new java.io.File(path.getPath() + file), null));
+    }
+
+    @Override
+    public void uploadFile(Path path, String file) throws ServerException, IOException {
+        Link link = restClient.getUploadLink(file, true);
+        restClient.uploadFile(link, true, new java.io.File(path.getPath(), file), null);
     }
 }
