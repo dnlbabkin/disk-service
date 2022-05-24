@@ -1,6 +1,6 @@
 package com.reliab.diskservice.configuration;
 
-import com.reliab.diskservice.converter.StringToServiceEnumConverter;
+import com.reliab.diskservice.components.EnumConverter;
 import com.reliab.diskservice.properties.ExternalProperties;
 import com.yandex.disk.rest.Credentials;
 import com.yandex.disk.rest.RestClient;
@@ -18,7 +18,7 @@ public class MVCConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringToServiceEnumConverter());
+        registry.addConverter(new EnumConverter());
     }
 
     @Bean

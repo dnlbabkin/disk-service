@@ -1,18 +1,17 @@
 package com.reliab.diskservice.service.impl;
 
-import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.File;
+import com.reliab.diskservice.model.Path;
+import com.reliab.diskservice.model.Resources;
 import com.reliab.diskservice.service.*;
 import com.yandex.disk.rest.FileDownloadListener;
 import com.yandex.disk.rest.ResourcesArgs;
 import com.yandex.disk.rest.RestClient;
 import com.yandex.disk.rest.exceptions.ServerException;
 import com.yandex.disk.rest.exceptions.ServerIOException;
-import com.yandex.disk.rest.exceptions.WrongMethodException;
 import com.yandex.disk.rest.json.DiskInfo;
 import com.yandex.disk.rest.json.Link;
 import com.yandex.disk.rest.json.Resource;
-import com.yandex.disk.rest.json.ResourceList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +22,8 @@ import java.util.List;
 @Service("yandex")
 @RequiredArgsConstructor
 public class YandexServiceImpl implements
-        DiskInfoService, DiskService, FlatResourcesService,
-        ResourcesService, DownloadFileService, UploadFileService {
+        DiskInfoService, DiskService, DownloadFileService,
+        FlatResourcesService, ResourcesService, UploadFileService {
 
     private final RestClient restClient;
 
@@ -42,18 +41,20 @@ public class YandexServiceImpl implements
     @Override
     public List<DiskInfo> getInfo() throws ServerIOException, IOException {
         List<DiskInfo> diskInfos = new ArrayList<>();
-
         diskInfos.add(restClient.getDiskInfo());
 
         return diskInfos;
     }
 
     @Override
-    public ResourceList getFlatResource() throws ServerIOException, IOException {
+    public Resources getFlatResource() throws ServerIOException, IOException {
         ResourcesArgs.Builder builder = new ResourcesArgs.Builder();
+        Resources resources = new Resources();
+        resources.setYandexFiled(restClient.getFlatResourceList(builder.build()).getItems());
 
-        return restClient.getFlatResourceList(builder.build());
+        return resources;
     }
+
 
     @Override
     public Resource getResources(String path) throws ServerIOException, IOException {

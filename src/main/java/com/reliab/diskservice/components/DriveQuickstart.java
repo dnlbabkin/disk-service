@@ -1,6 +1,5 @@
-package com.reliab.diskservice;
+package com.reliab.diskservice.components;
 
-import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -10,23 +9,29 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.DriveScopes;
+import com.reliab.diskservice.properties.ExternalProperties;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
 
+@Component
+@RequiredArgsConstructor
 public class DriveQuickstart {
 
     private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
     private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE_METADATA_READONLY);
-    private static final String CREDENTIALS_FILE_PATH = "/keys/client_secret_diskservice.json";
+
+    private final ExternalProperties properties;
 
     public Credential getCredential(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        InputStream inputStream = DriveQuickstart.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream inputStream = DriveQuickstart.class.getResourceAsStream(properties.getFilePath());
 
         if(inputStream == null) {
-            throw new FileNotFoundException("Resources not found: " + CREDENTIALS_FILE_PATH);
+            throw new FileNotFoundException("Resources not found: " + properties.getFilePath());
         }
 
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(inputStream));

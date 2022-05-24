@@ -1,8 +1,10 @@
 package com.reliab.diskservice.service.impl;
 
+import com.google.api.services.drive.model.FileList;
 import com.reliab.diskservice.enums.TypeOfService;
-import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.File;
+import com.reliab.diskservice.model.Path;
+import com.reliab.diskservice.model.Resources;
 import com.reliab.diskservice.service.*;
 import com.yandex.disk.rest.exceptions.ServerException;
 import com.yandex.disk.rest.exceptions.ServerIOException;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,9 +31,8 @@ public class ChoiceServiceImpl implements ChoiceService {
     private final Map<String, UploadFileService> uploadFileServiceMap;
 
 
-
     @Override
-    public List<File> getFiles(TypeOfService typeOfService) {
+    public List<File> getFiles(TypeOfService typeOfService) throws GeneralSecurityException, IOException {
         DiskService diskServices = diskServiceMap.get(typeOfService.getService());
 
         return diskServices.getFiles();
@@ -44,7 +46,7 @@ public class ChoiceServiceImpl implements ChoiceService {
     }
 
     @Override
-    public ResourceList getFlatResource(TypeOfService typeOfService) throws ServerIOException, IOException {
+    public Resources getFlatResource(TypeOfService typeOfService) throws ServerIOException, IOException, GeneralSecurityException {
         FlatResourcesService patchResources = patchResourcesMap.get(typeOfService.getService());
 
         return patchResources.getFlatResource();
