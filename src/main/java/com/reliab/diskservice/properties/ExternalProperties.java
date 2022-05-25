@@ -9,5 +9,6 @@ public class ExternalProperties {
     private String oauth;
     private String filePath;
     private String tokens;
+    private String appName;
 }
 

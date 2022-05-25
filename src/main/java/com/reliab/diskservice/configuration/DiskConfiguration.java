@@ -20,9 +20,8 @@ import java.security.GeneralSecurityException;
 
 @Configuration
 @RequiredArgsConstructor
-public class MVCConfiguration implements WebMvcConfigurer {
+public class DiskConfiguration implements WebMvcConfigurer {
 
-    private static final String APPLICATION_NAME = "disk-service";
     private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
     private final DriveQuickstart driveQuickstart;
@@ -45,7 +44,7 @@ public class MVCConfiguration implements WebMvcConfigurer {
     public Drive getDrive() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, driveQuickstart.getCredential(HTTP_TRANSPORT))
-                .setApplicationName(APPLICATION_NAME)
+                .setApplicationName(properties.getAppName())
                 .build();
 
         return service;

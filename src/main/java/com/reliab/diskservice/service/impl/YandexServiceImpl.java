@@ -74,4 +74,6 @@ public class YandexServiceImpl implements
         Link link = restClient.getUploadLink(file, true);
         restClient.uploadFile(link, true, new java.io.File(path.getPath(), file), null);
     }
+
+
 }
