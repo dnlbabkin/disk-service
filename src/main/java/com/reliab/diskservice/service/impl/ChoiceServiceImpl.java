@@ -67,7 +67,7 @@ public class ChoiceServiceImpl implements ChoiceService {
     }
 
     @Override
-    public void uploadFile(TypeOfService typeOfService, Path path, String file) throws ServerException, IOException {
+    public void uploadFile(TypeOfService typeOfService, Path path, String file) throws ServerException, IOException, GeneralSecurityException {
         UploadFileService uploadFileService = uploadFileServiceMap.get(typeOfService.getService());
 
         uploadFileService.uploadFile(path, file);

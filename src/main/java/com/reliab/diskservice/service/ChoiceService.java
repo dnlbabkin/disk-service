@@ -19,5 +19,5 @@ public interface ChoiceService {
     void downloadFile(TypeOfService typeOfService, Path path, String file) throws ServerException, IOException;
     Resources getFlatResource(TypeOfService typeOfService) throws ServerIOException, IOException, GeneralSecurityException;
     Resource getResources(TypeOfService typeOfService, String path) throws ServerIOException, IOException;
-    void uploadFile(TypeOfService typeOfService, Path path, String file) throws ServerException, IOException;
+    void uploadFile(TypeOfService typeOfService, Path path, String file) throws ServerException, IOException, GeneralSecurityException;
 }

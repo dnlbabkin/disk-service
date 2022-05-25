@@ -1,32 +1,25 @@
 package com.reliab.diskservice.service.impl;
 
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.FileContent;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
-import com.reliab.diskservice.components.DriveQuickstart;
 import com.reliab.diskservice.model.File;
+import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.Resources;
 import com.reliab.diskservice.service.DiskService;
 import com.reliab.diskservice.service.FlatResourcesService;
+import com.reliab.diskservice.service.UploadFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service("google")
 @RequiredArgsConstructor
-public class GoogleServiceImpl implements DiskService, FlatResourcesService {
+public class GoogleServiceImpl implements DiskService, FlatResourcesService, UploadFileService {
 
-    private static final String APPLICATION_NAME = "disk-service";
-    private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private final DriveQuickstart driveQuickstart;
+    private final Drive service;
 
     @Override
     public List<File> getFiles() {
@@ -39,13 +32,9 @@ public class GoogleServiceImpl implements DiskService, FlatResourcesService {
         return files;
     }
 
-    @Override
-    public Resources getFlatResource() throws IOException, GeneralSecurityException {
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, driveQuickstart.getCredential(HTTP_TRANSPORT))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
 
+    @Override
+    public Resources getFlatResource() throws IOException {
         com.google.api.services.drive.model.FileList result = service.files().list()
                 .setPageSize(10)
                 .setFields("nextPageToken, files(id, name)")
@@ -55,5 +44,16 @@ public class GoogleServiceImpl implements DiskService, FlatResourcesService {
         resources.setGoogleFiles(files);
 
         return resources;
+    }
+
+    @Override
+    public void uploadFile(Path path, String file) throws IOException {
+        com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
+        fileMetadata.setName(file);
+        java.io.File filePath = new java.io.File(path.getPath() + file);
+        FileContent mediaContent = new FileContent(path.getType(), filePath);
+        service.files().create(fileMetadata, mediaContent)
+                .setFields("id")
+                .execute();
     }
 }

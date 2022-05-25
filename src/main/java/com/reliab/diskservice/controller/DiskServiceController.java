@@ -67,7 +67,7 @@ public class DiskServiceController {
     @PutMapping("/{typeOfService}/upload/{file}")
     public String uploadFile(@PathVariable("typeOfService") TypeOfService typeOfService,
                              @PathVariable("file") String file,
-                             @RequestBody Path path) throws ServerException, IOException {
+                             @RequestBody Path path) throws ServerException, IOException, GeneralSecurityException {
         choiceService.uploadFile(typeOfService, path, file);
 
         return path.getPath() + file;

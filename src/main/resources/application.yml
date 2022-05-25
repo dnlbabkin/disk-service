@@ -2,3 +2,4 @@ logging.level.org.springframework.web: DEBUG
 external:
   oauth: 'AQAAAABUjLwwAAfbUKsrHD9k5UU3uZhZ_VRWdbk'
   filepath: '/keys/client_secret_diskservice.json'
+  tokens: 'src/main/resources/tokens'

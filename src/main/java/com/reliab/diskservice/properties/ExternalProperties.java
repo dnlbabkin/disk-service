@@ -8,5 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ExternalProperties {
     private String oauth;
     private String filePath;
+    private String tokens;
 }
 
