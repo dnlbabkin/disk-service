@@ -3,6 +3,7 @@ package com.reliab.diskservice.service.impl;
 import com.reliab.diskservice.model.File;
 import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.Resources;
+import com.reliab.diskservice.properties.ExternalProperties;
 import com.reliab.diskservice.service.*;
 import com.yandex.disk.rest.FileDownloadListener;
 import com.yandex.disk.rest.ResourcesArgs;
@@ -14,6 +15,7 @@ import com.yandex.disk.rest.json.Link;
 import com.yandex.disk.rest.json.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,9 +28,14 @@ public class YandexServiceImpl implements
         FlatResourcesService, ResourcesService, UploadFileService {
 
     private final RestClient restClient;
+    private final RestTemplate template;
+    private final ExternalProperties properties;
 
     @Override
     public List<File> getFiles() {
+//        template.getForObject("https://oauth.yandex.ru/authorize?response_type=token&client_id=" + properties.getClientId(), String.class);
+        template.getForObject("https://oauth.yandex.ru/authorize?response_type=token&client_id=" + properties.getClientId(), String.class);
+        template.httpEntityCallback(String.class);
         List<File> files = new ArrayList<>();
         File file = new File();
 

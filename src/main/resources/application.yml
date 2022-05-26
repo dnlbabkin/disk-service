@@ -1,5 +1,6 @@
 logging.level.org.springframework.web: DEBUG
 external:
+  clientId: '017c21efe04649d5970324b2e3b6bf5f'
   oauth: 'AQAAAABUjLwwAAfbUKsrHD9k5UU3uZhZ_VRWdbk'
   filepath: '/keys/client_secret_diskservice.json'
   tokens: 'src/main/resources/tokens'

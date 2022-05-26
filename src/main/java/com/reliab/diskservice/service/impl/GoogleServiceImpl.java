@@ -12,29 +12,21 @@ import com.reliab.diskservice.service.UploadFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service("google")
 @RequiredArgsConstructor
-public class GoogleServiceImpl implements DiskService, FlatResourcesService, UploadFileService, DownloadFileService {
+public class GoogleServiceImpl implements FlatResourcesService, UploadFileService, DownloadFileService {
 
     private final Drive service;
     private String fileId;
 
-    @Override
-    public List<File> getFiles() {
-        List<File> files = new ArrayList<>();
-        File file = new File();
-
-        file.setFileName("google");
-        files.add(file);
-
-        return files;
-    }
 
     private List<com.google.api.services.drive.model.File> getFileList() throws IOException {
         com.google.api.services.drive.model.FileList result = service.files().list()
@@ -63,6 +55,17 @@ public class GoogleServiceImpl implements DiskService, FlatResourcesService, Upl
         return fileId;
     }
 
+//    @Override
+//    public List<File> getFiles() {
+//        List<File> files = new ArrayList<>();
+//        File file = new File();
+//
+//        file.setFileName("google");
+//        files.add(file);
+//
+//        return files;
+//    }
+
     @Override
     public Resources getFlatResource() throws IOException {
         List<com.google.api.services.drive.model.File> files = getFileList();
@@ -86,7 +89,7 @@ public class GoogleServiceImpl implements DiskService, FlatResourcesService, Upl
     public void downloadFile(Path path, String file) throws IOException {
         String fileId = getFileId(file);
         OutputStream outputStream = new FileOutputStream(path.getPath() + file);
-        service.files().export(fileId, path.getType())
+        service.files().get(fileId)
                 .executeMediaAndDownloadTo(outputStream);
     }
 }
