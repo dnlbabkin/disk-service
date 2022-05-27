@@ -1,7 +1,7 @@
 package com.reliab.diskservice.controller;
 
 import com.reliab.diskservice.enums.TypeOfService;
-import com.reliab.diskservice.model.File;
+import com.reliab.diskservice.model.Disk;
 import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.Resources;
 import com.reliab.diskservice.service.impl.ChoiceServiceImpl;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.List;
 
 @RestController
 @RequestMapping("disk-service")
@@ -24,17 +23,17 @@ public class DiskServiceController {
     private final ChoiceServiceImpl choiceService;
 
     @GetMapping("/{typeOfService}")
-    public List<File> getFiles(@PathVariable("typeOfService") TypeOfService typeOfService)
+    public Disk getFiles(@PathVariable("typeOfService") TypeOfService typeOfService)
             throws GeneralSecurityException, IOException {
-        List<File> files = choiceService.getFiles(typeOfService);
+        Disk files = choiceService.getFiles(typeOfService);
 
         return files;
     }
 
     @GetMapping("/{typeOfService}/get-disk-info")
-    public List<DiskInfo> getDiskInfo(@PathVariable("typeOfService") TypeOfService typeOfService)
+    public DiskInfo getDiskInfo(@PathVariable("typeOfService") TypeOfService typeOfService)
             throws ServerIOException, IOException {
-        List<DiskInfo> diskInfo = choiceService.getInfo(typeOfService);
+        DiskInfo diskInfo = choiceService.getInfo(typeOfService);
 
         return diskInfo;
     }

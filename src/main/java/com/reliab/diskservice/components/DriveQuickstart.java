@@ -9,7 +9,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.DriveScopes;
-import com.reliab.diskservice.properties.ExternalProperties;
+import com.reliab.diskservice.properties.CredentialsProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class DriveQuickstart {
     private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
 
-    private final ExternalProperties properties;
+    private final CredentialsProperties properties;
 
     public Credential getCredential(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         InputStream inputStream = DriveQuickstart.class.getResourceAsStream(properties.getFilePath());
@@ -41,6 +41,7 @@ public class DriveQuickstart {
                 .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        System.out.println(credential.getAccessToken());
 
         return credential;
     }

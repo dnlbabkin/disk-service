@@ -5,3 +5,5 @@ external:
   filepath: '/keys/client_secret_diskservice.json'
   tokens: 'src/main/resources/tokens'
   appname: 'disk-service'
+  googleAuth: 'https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=1015500310904-s08q6bs31f00rv582nnj9t7etcj60r08.apps.googleusercontent.com&redirect_uri=http://localhost:8888/Callback&response_type=code&scope=https://www.googleapis.com/auth/drive'
+  yandexAuth: 'https://oauth.yandex.ru/authorize?response_type=token&client_id='

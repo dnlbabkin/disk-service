@@ -2,29 +2,29 @@ package com.reliab.diskservice.service.impl;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
-import com.reliab.diskservice.model.File;
+import com.reliab.diskservice.model.Disk;
 import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.Resources;
+import com.reliab.diskservice.properties.CredentialsProperties;
 import com.reliab.diskservice.service.DiskService;
-import com.reliab.diskservice.service.DownloadFileService;
-import com.reliab.diskservice.service.FlatResourcesService;
-import com.reliab.diskservice.service.UploadFileService;
+import com.yandex.disk.rest.exceptions.ServerIOException;
+import com.yandex.disk.rest.json.DiskInfo;
+import com.yandex.disk.rest.json.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.activation.MimetypesFileTypeMap;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("google")
 @RequiredArgsConstructor
-public class GoogleServiceImpl implements FlatResourcesService, UploadFileService, DownloadFileService {
+public class GoogleServiceImpl implements DiskService {
 
     private final Drive service;
+    private final CredentialsProperties properties;
+
     private String fileId;
 
 
@@ -55,16 +55,14 @@ public class GoogleServiceImpl implements FlatResourcesService, UploadFileServic
         return fileId;
     }
 
-//    @Override
-//    public List<File> getFiles() {
-//        List<File> files = new ArrayList<>();
-//        File file = new File();
-//
-//        file.setFileName("google");
-//        files.add(file);
-//
-//        return files;
-//    }
+    @Override
+    public Disk getFiles() {
+        Disk file = new Disk();
+        file.setDiskName("google");
+        file.setAuthPage(properties.getGoogleAuth());
+
+        return file;
+    }
 
     @Override
     public Resources getFlatResource() throws IOException {
@@ -89,7 +87,16 @@ public class GoogleServiceImpl implements FlatResourcesService, UploadFileServic
     public void downloadFile(Path path, String file) throws IOException {
         String fileId = getFileId(file);
         OutputStream outputStream = new FileOutputStream(path.getPath() + file);
-        service.files().get(fileId)
-                .executeMediaAndDownloadTo(outputStream);
+        service.files().get(fileId).executeMediaAndDownloadTo(outputStream);
+    }
+
+    @Override
+    public DiskInfo getInfo() throws ServerIOException, IOException {
+        return null;
+    }
+
+    @Override
+    public Resource getResources(String path) throws ServerIOException, IOException {
+        return null;
     }
 }
