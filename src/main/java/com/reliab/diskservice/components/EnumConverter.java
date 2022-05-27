@@ -1,14 +1,14 @@
 package com.reliab.diskservice.components;
 
-import com.reliab.diskservice.enums.TypeOfService;
+import com.reliab.diskservice.enums.NameService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnumConverter implements Converter<String, TypeOfService> {
+public class EnumConverter implements Converter<String, NameService> {
 
     @Override
-    public TypeOfService convert(String source){
-        return TypeOfService.valueOf(source.toUpperCase());
+    public NameService convert(String source){
+        return NameService.valueOf(source.toUpperCase());
     }
 }

@@ -2,10 +2,11 @@ package com.reliab.diskservice.service.impl;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
 import com.reliab.diskservice.model.Disk;
 import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.Resources;
-import com.reliab.diskservice.properties.CredentialsProperties;
+import com.reliab.diskservice.configuration.properties.CredentialsProperties;
 import com.reliab.diskservice.service.DiskService;
 import com.yandex.disk.rest.exceptions.ServerIOException;
 import com.yandex.disk.rest.json.DiskInfo;
@@ -25,34 +26,26 @@ public class GoogleServiceImpl implements DiskService {
     private final Drive service;
     private final CredentialsProperties properties;
 
-    private String fileId;
+    public String fileId; //fixme
 
 
-    private List<com.google.api.services.drive.model.File> getFileList() throws IOException {
+    private List<File> getFileList() throws IOException {
         com.google.api.services.drive.model.FileList result = service.files().list()
                 .setFields("nextPageToken, files(id, name)")
                 .execute();
-        List<com.google.api.services.drive.model.File> files = result.getFiles();
 
-        return files;
+        return result.getFiles();
     }
 
-    private com.google.api.services.drive.model.File getFile(String file) {
-        com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
-        fileMetadata.setName(file);
-
-        return fileMetadata;
+    private File buildGoogleFile(String file) {
+        return new File().setName(file);
     }
 
     private String getFileId(String file) throws IOException {
-        List<com.google.api.services.drive.model.File> files = getFileList();
-        for (com.google.api.services.drive.model.File getFileId : files) {
-            if(getFileId.getName().equals(file)){
-                fileId = getFileId.getId();
-            }
-        }
-
-        return fileId;
+        return getFileList().stream()
+                .filter(getFileId -> getFileId.getName().equals(file))
+                .findFirst()
+                .map(getFileId -> fileId = getFileId.getId()).orElse(null);
     }
 
     @Override
@@ -65,21 +58,19 @@ public class GoogleServiceImpl implements DiskService {
     }
 
     @Override
-    public Resources getFlatResource() throws IOException {
-        List<com.google.api.services.drive.model.File> files = getFileList();
+    public Resources getFlatFileList() throws IOException {
         Resources resources = new Resources();
-        resources.setGoogleFiles(files);
-
+        resources.setGoogleFiles(getFileList());
         return resources;
     }
 
     @Override
     public void uploadFile(Path path, String file) throws IOException {
-        com.google.api.services.drive.model.File fileMetadata = getFile(file);
+        File fileMetadata = buildGoogleFile(file);
         java.io.File filePath = new java.io.File(path.getPath() + file);
-        FileContent mediaContent = new FileContent(path.getType(), filePath);
+        FileContent mediaContent = new FileContent(path.getMimeType(), filePath);
         service.files().create(fileMetadata, mediaContent)
-                .setFields("id")
+                .setFields("id") //why?
                 .execute();
     }
 
@@ -92,11 +83,11 @@ public class GoogleServiceImpl implements DiskService {
 
     @Override
     public DiskInfo getInfo() throws ServerIOException, IOException {
-        return null;
+        throw new IllegalStateException();
     }
 
     @Override
     public Resource getResources(String path) throws ServerIOException, IOException {
-        return null;
+        throw new IllegalStateException();
     }
 }

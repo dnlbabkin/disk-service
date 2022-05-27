@@ -9,7 +9,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.DriveScopes;
-import com.reliab.diskservice.properties.CredentialsProperties;
+import com.reliab.diskservice.configuration.properties.CredentialsProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +41,6 @@ public class DriveQuickstart {
                 .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
-        System.out.println(credential.getAccessToken());
 
         return credential;
     }

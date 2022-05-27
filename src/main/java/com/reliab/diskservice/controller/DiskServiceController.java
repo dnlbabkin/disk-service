@@ -1,6 +1,6 @@
 package com.reliab.diskservice.controller;
 
-import com.reliab.diskservice.enums.TypeOfService;
+import com.reliab.diskservice.enums.NameService;
 import com.reliab.diskservice.model.Disk;
 import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.Resources;
@@ -23,7 +23,7 @@ public class DiskServiceController {
     private final ChoiceServiceImpl choiceService;
 
     @GetMapping("/{typeOfService}")
-    public Disk getFiles(@PathVariable("typeOfService") TypeOfService typeOfService)
+    public Disk getFiles(@PathVariable("typeOfService") NameService typeOfService)
             throws GeneralSecurityException, IOException {
         Disk files = choiceService.getFiles(typeOfService);
 
@@ -31,7 +31,7 @@ public class DiskServiceController {
     }
 
     @GetMapping("/{typeOfService}/get-disk-info")
-    public DiskInfo getDiskInfo(@PathVariable("typeOfService") TypeOfService typeOfService)
+    public DiskInfo getDiskInfo(@PathVariable("typeOfService") NameService typeOfService)
             throws ServerIOException, IOException {
         DiskInfo diskInfo = choiceService.getInfo(typeOfService);
 
@@ -39,7 +39,7 @@ public class DiskServiceController {
     }
 
     @GetMapping("/{typeOfService}/get-flat-resources")
-    public Resources getFlatResources(@PathVariable("typeOfService") TypeOfService typeOfService)
+    public Resources getFlatResources(@PathVariable("typeOfService") NameService typeOfService)
             throws ServerIOException, IOException, GeneralSecurityException {
         Resources resources = choiceService.getFlatResource(typeOfService);
 
@@ -47,7 +47,7 @@ public class DiskServiceController {
     }
 
     @GetMapping("/{typeOfService}/get-resources/{path}")
-    public Resource getResources(@PathVariable("typeOfService") TypeOfService typeOfService,
+    public Resource getResources(@PathVariable("typeOfService") NameService typeOfService,
                                  @PathVariable("path") String path) throws ServerIOException, IOException {
         Resource resource = choiceService.getResources(typeOfService, path);
 
@@ -55,7 +55,7 @@ public class DiskServiceController {
     }
 
     @PostMapping("/{typeOfService}/download/{file}")
-    public String downloadFile(@PathVariable("typeOfService") TypeOfService typeOfService,
+    public String downloadFile(@PathVariable("typeOfService") NameService typeOfService,
                                @PathVariable("file") String file,
                                @RequestBody Path path) throws ServerException, IOException {
         choiceService.downloadFile(typeOfService, path, file);
@@ -64,7 +64,7 @@ public class DiskServiceController {
     }
 
     @PutMapping("/{typeOfService}/upload/{file}")
-    public String uploadFile(@PathVariable("typeOfService") TypeOfService typeOfService,
+    public String uploadFile(@PathVariable("typeOfService") NameService typeOfService,
                              @PathVariable("file") String file,
                              @RequestBody Path path) throws ServerException, IOException, GeneralSecurityException {
         choiceService.uploadFile(typeOfService, path, file);

@@ -3,7 +3,7 @@ package com.reliab.diskservice.service.impl;
 import com.reliab.diskservice.model.Disk;
 import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.Resources;
-import com.reliab.diskservice.properties.CredentialsProperties;
+import com.reliab.diskservice.configuration.properties.CredentialsProperties;
 import com.reliab.diskservice.service.*;
 import com.yandex.disk.rest.FileDownloadListener;
 import com.yandex.disk.rest.ResourcesArgs;
@@ -41,10 +41,10 @@ public class YandexServiceImpl implements DiskService {
     }
 
     @Override
-    public Resources getFlatResource() throws ServerIOException, IOException {
-        ResourcesArgs.Builder builder = new ResourcesArgs.Builder();
+    public Resources getFlatFileList() throws ServerIOException, IOException {
+        ResourcesArgs builder = new ResourcesArgs.Builder().build();
         Resources resources = new Resources();
-        resources.setYandexFiled(restClient.getFlatResourceList(builder.build()).getItems());
+        resources.setYandexFiled(restClient.getFlatResourceList(builder).getItems());
 
         return resources;
     }

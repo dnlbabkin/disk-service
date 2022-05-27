@@ -1,6 +1,6 @@
 package com.reliab.diskservice;
 
-import com.reliab.diskservice.properties.CredentialsProperties;
+import com.reliab.diskservice.configuration.properties.CredentialsProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

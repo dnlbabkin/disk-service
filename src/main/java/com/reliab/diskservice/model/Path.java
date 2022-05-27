@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class Path {
     String path;
-    String type;
+    String mimeType; //todo think about type MimeType from ext library
 }

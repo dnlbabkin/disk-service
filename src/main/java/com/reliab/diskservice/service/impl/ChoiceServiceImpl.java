@@ -1,6 +1,6 @@
 package com.reliab.diskservice.service.impl;
 
-import com.reliab.diskservice.enums.TypeOfService;
+import com.reliab.diskservice.enums.NameService;
 import com.reliab.diskservice.model.Disk;
 import com.reliab.diskservice.model.Path;
 import com.reliab.diskservice.model.Resources;
@@ -18,49 +18,49 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ChoiceServiceImpl implements ChoiceService {
+public class ChoiceServiceImpl implements ChoiceService { //fixme шаблон стратегия вместо этого класс
 
-    private final Map<String, DiskService> diskServiceMap;
+    private final Map<NameService, DiskService> diskServiceMap;
 
 
     @Override
-    public Disk getFiles(TypeOfService typeOfService) throws GeneralSecurityException, IOException {
-        DiskService diskServices = diskServiceMap.get(typeOfService.getService());
+    public Disk getFiles(NameService typeOfService) throws GeneralSecurityException, IOException {
+        DiskService diskServices = diskServiceMap.get(typeOfService);
 
         return diskServices.getFiles();
     }
 
     @Override
-    public DiskInfo getInfo(TypeOfService typeOfService) throws ServerIOException, IOException {
-        DiskService diskInfo = diskServiceMap.get(typeOfService.getService());
+    public DiskInfo getInfo(NameService typeOfService) throws ServerIOException, IOException {
+        DiskService diskInfo = diskServiceMap.get(typeOfService);
 
         return diskInfo.getInfo();
     }
 
     @Override
-    public Resources getFlatResource(TypeOfService typeOfService) throws ServerIOException, IOException, GeneralSecurityException {
-        DiskService patchResources = diskServiceMap.get(typeOfService.getService());
+    public Resources getFlatResource(NameService typeOfService) throws ServerIOException, IOException, GeneralSecurityException {
+        DiskService patchResources = diskServiceMap.get(typeOfService);
 
-        return patchResources.getFlatResource();
+        return patchResources.getFlatFileList();
     }
 
     @Override
-    public Resource getResources(TypeOfService typeOfService, String path) throws ServerIOException, IOException {
-        DiskService resources = diskServiceMap.get(typeOfService.getService());
+    public Resource getResources(NameService typeOfService, String path) throws ServerIOException, IOException {
+        DiskService resources = diskServiceMap.get(typeOfService); //fixme
 
         return resources.getResources(path);
     }
 
     @Override
-    public void downloadFile(TypeOfService typeOfService, Path path, String file) throws ServerException, IOException {
-        DiskService downloadFileService = diskServiceMap.get(typeOfService.getService());
+    public void downloadFile(NameService typeOfService, Path path, String file) throws ServerException, IOException {
+        DiskService downloadFileService = diskServiceMap.get(typeOfService);
 
         downloadFileService.downloadFile(path, file);
     }
 
     @Override
-    public void uploadFile(TypeOfService typeOfService, Path path, String file) throws ServerException, IOException, GeneralSecurityException {
-        DiskService uploadFileService = diskServiceMap.get(typeOfService.getService());
+    public void uploadFile(NameService typeOfService, Path path, String file) throws ServerException, IOException, GeneralSecurityException {
+        DiskService uploadFileService = diskServiceMap.get(typeOfService);
 
         uploadFileService.uploadFile(path, file);
     }

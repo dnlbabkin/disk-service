@@ -7,7 +7,10 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Resources {
+public class Resources<T> {
+    private List<T> fileList;
+
+    //fixme удалить
     private List<Resource> yandexFiled;
     private List<File> googleFiles;
 }

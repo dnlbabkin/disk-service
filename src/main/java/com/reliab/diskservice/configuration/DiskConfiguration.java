@@ -6,7 +6,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.reliab.diskservice.components.DriveQuickstart;
 import com.reliab.diskservice.components.EnumConverter;
-import com.reliab.diskservice.properties.CredentialsProperties;
+import com.reliab.diskservice.configuration.properties.CredentialsProperties;
 import com.yandex.disk.rest.Credentials;
 import com.yandex.disk.rest.RestClient;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class DiskConfiguration implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new EnumConverter());
     }
-
+//fixme unused beans
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();

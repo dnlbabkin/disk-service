@@ -15,7 +15,7 @@ public interface DiskService {
     Disk getFiles() throws GeneralSecurityException, IOException;
     DiskInfo getInfo() throws ServerIOException, IOException;
     void downloadFile(Path path, String file) throws ServerException, IOException;
-    Resources getFlatResource() throws ServerIOException, IOException, GeneralSecurityException;
+    Resources getFlatFileList() throws ServerIOException, IOException, GeneralSecurityException;
     Resource getResources(String path) throws ServerIOException, IOException;
     void uploadFile(Path path, String file) throws ServerException, IOException, GeneralSecurityException;
 }
